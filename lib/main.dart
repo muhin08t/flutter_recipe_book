@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_recipe_book/providers/category_provider.dart';
 import 'package:flutter_recipe_book/screens/home_screen.dart';
 import 'package:flutter_recipe_book/screens/recipe_screen.dart';
 import 'package:flutter_recipe_book/screens/search_screen.dart';
 import 'package:flutter_recipe_book/screens/settings_screen.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp( MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => CategoryProvider()),
+    ],
+    child: MyApp(),
+  ),);
 }
 
 class MyApp extends StatelessWidget {

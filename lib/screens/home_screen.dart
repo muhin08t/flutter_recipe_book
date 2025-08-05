@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_recipe_book/models/category.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/bottom_nav_provider.dart';
 import '../providers/category_provider.dart';
+import '../providers/selected_category_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -53,6 +55,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     return InkWell(
                         onTap: () {
                       print('Tapped on ${category.title}');
+                      final selectedCategory = category.title;
+
+                      // 1. Set selected category
+                      Provider.of<SelectedCategoryProvider>(context, listen: false)
+                          .setCategory(selectedCategory);
+                      Provider.of<BottomNavProvider>(context, listen: false).setIndex(1);
                       // Navigate or perform action here
                     },
 

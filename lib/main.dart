@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_recipe_book/providers/bottom_nav_provider.dart';
 import 'package:flutter_recipe_book/providers/category_provider.dart';
+import 'package:flutter_recipe_book/providers/recipe_provider.dart';
+import 'package:flutter_recipe_book/providers/selected_category_provider.dart';
 import 'package:flutter_recipe_book/screens/home_screen.dart';
 import 'package:flutter_recipe_book/screens/recipe_screen.dart';
 import 'package:flutter_recipe_book/screens/search_screen.dart';
@@ -10,6 +13,9 @@ void main() {
   runApp( MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => CategoryProvider()),
+      ChangeNotifierProvider(create: (_) => BottomNavProvider()),
+      ChangeNotifierProvider(create: (_) => SelectedCategoryProvider()),
+      ChangeNotifierProvider(create: (_) => RecipeProvider()),
     ],
     child: MyApp(),
   ),);
@@ -37,54 +43,54 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const BottomArea(),
+      home: const MainScreen(),
     );
   }
 }
 
 
-class BottomArea extends StatefulWidget {
-  const BottomArea({super.key});
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
 
   @override
-  State<BottomArea> createState() => _BottomAreaState();
+  State<MainScreen> createState() => _MainScreenState();
 }
 
-class _BottomAreaState extends State<BottomArea> {
-  int _selectedIndex = 0;
-  static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static final List<Widget> _widgetOptions = <Widget>[
+class _MainScreenState extends State<MainScreen> {
+  static final List<Widget> _screens = <Widget>[
     HomeScreen(),
     RecipeScreen(),
     SearchScreen(),
     SettingsScreen(),
   ];
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Recipe book')),
-      body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.restaurant_menu), label: 'Recipe'),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
-        ],
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
-        // backgroundColor: Colors.black, // 👈 Add this line
-        // unselectedItemColor: Colors.red,  // 👈 Optional for better contrast
-        onTap: _onItemTapped,
-      ),
+    return Consumer<BottomNavProvider>(
+        builder: (context, bottomNav, _)
+    {
+      return Scaffold(
+        appBar: AppBar(title: const Text('Recipe book')),
+        body: _screens[bottomNav.currentIndex],
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: bottomNav.currentIndex,
+          onTap: (index) => bottomNav.setIndex(index),
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.restaurant_menu), label: 'Recipe'),
+            BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.settings), label: 'Settings'),
+          ],
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: Colors.amber[800],
+          // backgroundColor: Colors.black, // 👈 Add this line
+          // unselectedItemColor: Colors.red,  // 👈 Optional for better contrast
+        ),
+      );
+    }
     );
   }
 }

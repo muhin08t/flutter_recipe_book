@@ -36,52 +36,6 @@ class _RecipeScreenState extends State<RecipeScreen> {
     final recipeProvider = Provider.of<RecipeProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Column(
-          children: [
-            Text(
-              'Recipe Book',
-              style: TextStyle(
-                color: Colors.white, // Change to any color
-                fontSize: 20, // Optional: Adjust text size
-                fontWeight: FontWeight.bold, // Optional: Make text bold
-              ),
-            ),
-            SizedBox(height: 15), // Space between title and search field
-            Padding(
-              padding: const EdgeInsets.fromLTRB(10, 0, 0, 0), // Add padding
-              child: TextField(
-                controller: _searchController,
-                decoration: InputDecoration(
-                  labelText: 'Search for recipes',
-                  filled: true, // Adds background color
-                  fillColor: Colors.white, // Optional: Set background color
-                  suffixIcon: IconButton(
-                    icon: Icon(Icons.search),
-                    onPressed: () {
-                      //recipeProvider.fetchCategoryBasedRecipes(_searchController.text);
-                    },
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5), // Rounded corners
-                    borderSide: BorderSide.none, // Removes the default border
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
-                    borderSide: BorderSide(color: Colors.grey.shade300), // Light grey border
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
-                    borderSide: BorderSide(color: Colors.blue, width: 2), // Highlighted border
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-        backgroundColor: Color(0xFFd7456a),
-        toolbarHeight: 130, // Increase height to fit search bar
-      ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(8.0),

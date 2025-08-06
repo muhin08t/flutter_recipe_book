@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SelectedCategoryProvider with ChangeNotifier {
-  String? _selectedCategory;
+  String _selectedCategory = 'Pasta';
 
   String? get selectedCategory => _selectedCategory;
 

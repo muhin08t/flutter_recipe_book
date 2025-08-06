@@ -24,4 +24,24 @@ class RecipeProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<void> fetchSearchByRecipes(String query) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      _recipes = await _apiService.fetchSearchByRecipes(query);
+      print("search recipe length ${_recipes.length}");
+    } catch (e) {
+      print(e);
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  void clearRecipes() {
+    _recipes = [];
+    notifyListeners();
+  }
 }

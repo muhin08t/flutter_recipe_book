@@ -35,4 +35,19 @@ class ApiService {
       throw Exception('Failed to load recipes');
     }
   }
+
+  Future<List<Recipe>> fetchSearchByRecipes(String query) async {
+    String total = '$baseUrl/search.php?s=$query';
+    print("total url value "+total);
+    final response = await http.get(
+      Uri.parse('$baseUrl/search.php?s=$query'),
+    );
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final List<dynamic> results = data['meals'];
+      return results.map((json) => Recipe.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load search recipes');
+    }
+  }
 }

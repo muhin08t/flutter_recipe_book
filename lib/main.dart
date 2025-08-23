@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
       title: 'Recipe book',
       theme: ThemeData(
         appBarTheme: AppBarTheme(
-          backgroundColor: Colors.deepPurple,
+          backgroundColor: Color(0xFFd7456a),
           centerTitle: true,
           titleTextStyle: TextStyle(
             color: Colors.white,

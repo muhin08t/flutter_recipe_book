@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_recipe_book/screens/recipe_details_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../models/recipe.dart';
@@ -56,7 +57,16 @@ class _RecipeScreenState extends State<RecipeScreen> {
                   itemCount: recipeProvider.recipes.length,
                   itemBuilder: (context, index) {
                     Recipe recipe = recipeProvider.recipes[index];
-                    return Card(
+                    return InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RecipeDetailsScreen(id: recipe.id,),
+                            ),
+                          );
+                    },
+                    child: Card(
                       elevation: 2.0, // Add a shadow to the card
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0), // Rounded corners
@@ -97,6 +107,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
                           ),
                         ],
                       ),
+                    )
                     );
                   },
                 ),

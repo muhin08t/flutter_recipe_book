@@ -1,5 +1,6 @@
 
 import 'dart:convert';
+import 'package:flutter_recipe_book/models/recipe_details.dart';
 import 'package:http/http.dart' as http;
 import '../models/category.dart';
 import '../models/recipe.dart';
@@ -46,6 +47,25 @@ class ApiService {
       final data = json.decode(response.body);
       final List<dynamic> results = data['meals'];
       return results.map((json) => Recipe.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load search recipes');
+    }
+  }
+
+  Future<RecipeDetails> fetchRecipeDetails(String id) async {
+    String total = '$baseUrl/lookup.php?i=$id';
+    print("total url value "+total);
+    final response = await http.get(
+      Uri.parse('$baseUrl/lookup.php?i=$id'),
+    );
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final List<dynamic> results = data['meals'];
+      if (results.isNotEmpty) {
+        return RecipeDetails.fromJson(results.first);
+      } else {
+        throw Exception('No recipe found');
+      }
     } else {
       throw Exception('Failed to load search recipes');
     }

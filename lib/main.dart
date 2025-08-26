@@ -6,10 +6,11 @@ import 'package:flutter_recipe_book/providers/selected_category_provider.dart';
 import 'package:flutter_recipe_book/screens/home_screen.dart';
 import 'package:flutter_recipe_book/screens/recipe_screen.dart';
 import 'package:flutter_recipe_book/screens/search_screen.dart';
-import 'package:flutter_recipe_book/screens/settings_screen.dart';
+import 'package:flutter_recipe_book/screens/favorite_screen.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp( MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => CategoryProvider()),
@@ -61,7 +62,7 @@ class _MainScreenState extends State<MainScreen> {
     HomeScreen(),
     RecipeScreen(),
     SearchScreen(),
-    SettingsScreen(),
+    FavoriteScreen(),
   ];
 
 
@@ -82,7 +83,7 @@ class _MainScreenState extends State<MainScreen> {
                 icon: Icon(Icons.restaurant_menu), label: 'Recipe'),
             BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.settings), label: 'Settings'),
+                icon: Icon(Icons.favorite), label: 'Favorite'),
           ],
           type: BottomNavigationBarType.fixed,
           selectedItemColor: Colors.amber[800],

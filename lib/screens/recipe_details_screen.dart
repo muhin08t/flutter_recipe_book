@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../models/recipe_details.dart';
 
+
 class RecipeDetailsScreen extends StatefulWidget {
   const RecipeDetailsScreen({super.key, required this.id});
 
@@ -27,8 +28,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
     });
   }
 
-  int servings = 2;
-  bool isFavorite = false;
+  // bool isFavorite = false;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
         body: Center(child: CircularProgressIndicator()), // show loader
       );
     }
-
+    // isFavorite = Utils.isFavorite(recipeDetails.id);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -59,18 +59,25 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
         centerTitle: true,
         // Right side buttons
         actions: [
-          IconButton(
-            icon: Icon(
-              isFavorite ? Icons.favorite : Icons.favorite_border,
-              color: Colors.red,
-            ),
-            onPressed: () {
-              setState(() {
-                isFavorite = !isFavorite;
-              });
+          FutureBuilder<bool>(
+            future: recipeProvider.isFavorite(recipeDetails.id),
+            builder: (context, snapshot) {
+              // show loading while checking
+              bool isFavorite = snapshot.data ?? false;
+
+              return IconButton(
+                icon: Icon(
+                  isFavorite ? Icons.favorite : Icons.favorite_border,
+                  color: Colors.red,
+                ),
+                onPressed: () async {
+                  recipeProvider.toggleFavorite(recipeDetails);
+                },
+              );
             },
           ),
         ],
+
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -205,5 +212,6 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
       ),
     );
   }
+
 }
 

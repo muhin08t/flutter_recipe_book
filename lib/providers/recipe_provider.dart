@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_recipe_book/models/recipe_details.dart';
+import '../db/database_helper.dart';
 import '../models/recipe.dart';
 import '../services/api_service.dart';
 
@@ -8,10 +9,13 @@ class RecipeProvider with ChangeNotifier {
   List<Recipe> _recipes = [];
   bool _isLoading = false;
   RecipeDetails? _selectedRecipeDetails;
+  final DatabaseHelper _dbHelper = DatabaseHelper();
+  List<RecipeDetails> _favorites = [];
 
   List<Recipe> get recipes => _recipes;
   bool get isLoading => _isLoading;
   RecipeDetails? get selectedRecipeDetails => _selectedRecipeDetails;
+  List<RecipeDetails> get favorites => _favorites;
 
   Future<void> fetchCategoryBasedRecipes(String category) async {
     _isLoading = true;
@@ -65,5 +69,28 @@ class RecipeProvider with ChangeNotifier {
   void clearRecipeDetails() {
     _selectedRecipeDetails = null;
     notifyListeners();
+  }
+
+  Future<void> loadFavorites() async {
+    _favorites = await _dbHelper.getFavorites();
+    notifyListeners();
+  }
+
+  Future<void> toggleFavorite(RecipeDetails recipeDetails) async {
+    final isFav = await _dbHelper.isFavorite(recipeDetails.id);
+
+    if (isFav) {
+      await _dbHelper.deleteFavorite(recipeDetails.id);
+      _favorites.removeWhere((r) => r.id == recipeDetails.id);
+    } else {
+      await _dbHelper.insertFavorite(recipeDetails);
+      _favorites.add(recipeDetails);
+    }
+
+    notifyListeners();
+  }
+
+  Future<bool> isFavorite(String id) async {
+    return await _dbHelper.isFavorite(id);
   }
 }

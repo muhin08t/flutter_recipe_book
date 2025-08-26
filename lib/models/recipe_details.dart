@@ -50,4 +50,23 @@ class RecipeDetails {
       measure5: json['strMeasure5'] ?? '',
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'idMeal': id,
+      'strMeal': title,
+      'strMealThumb': image,
+      'strInstructions': instructions,
+      'strIngredient1': ingredient1,
+      'strIngredient2': ingredient2,
+      'strIngredient3': ingredient3,
+      'strIngredient4': ingredient4,
+      'strIngredient5': ingredient5,
+      'strMeasure1': measure1,
+      'strMeasure2': measure2,
+      'strMeasure3': measure3,
+      'strMeasure4': measure4,
+      'strMeasure5': measure5,
+    };
+  }
 }

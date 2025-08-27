@@ -35,6 +35,8 @@ migrate_working_dir/
 /.gradle/
 /android/build/
 /android/.gradle/
+/android/app/my-release-key.jks
+/android/key.properties
 
 # Symbolication related
 app.*.symbols
